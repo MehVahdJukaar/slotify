@@ -1,0 +1,15 @@
+{
+  "menu_id": "minecraft:beacon",
+  "modifiers": [
+    {
+      "slots": "1->4",
+      "x_offset": 10,
+      "y_offset": 10
+    },
+    {
+      "slots": [9,5,7],
+      "x_offset": 20,
+      "y_offset": 7
+    }
+  ]
+}
