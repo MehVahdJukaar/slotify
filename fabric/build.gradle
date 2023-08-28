@@ -26,9 +26,6 @@ dependencies {
     shadowCommon(project(path: ":common", configuration: "transformProductionFabric")) { transitive false }
 
 
-    modImplementation("me.shedaniel.cloth:cloth-config-fabric:${project.cloth_version}") {
-        exclude group: 'net.fabricmc.fabric-api'
-    }
     modImplementation("curse.maven:yacl-667299:4574163")
 
     modCompileOnly("curse.maven:modmenu-308702:3920481") {
@@ -52,9 +49,7 @@ processResources {
             mod_description      : mod_description,
             mod_credits          : mod_credits,
             mod_homepage         : mod_homepage,
-            mod_github           : mod_github,
-
-            required_moonlight_version : required_moonlight_version
+            mod_github           : mod_github
     ]
     // setting them as input
     inputs.properties replaceProperties

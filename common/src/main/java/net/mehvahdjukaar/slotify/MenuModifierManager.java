@@ -2,17 +2,16 @@ package net.mehvahdjukaar.slotify;
 
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.serialization.JsonOps;
 import it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap;
-import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.Slot;
-import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
@@ -39,7 +38,7 @@ public class MenuModifierManager extends SimpleJsonResourceReloadListener {
         for (var mod : list) {
             //inventory has a null menu type for some reason
             boolean isInventory = mod.menuId().equals(INVENTORY);
-            Optional<MenuType<?>> menu = BuiltInRegistries.MENU.getOptional(mod.menuId());
+            Optional<MenuType<?>> menu = Registry.MENU.getOptional(mod.menuId());
             if (menu.isPresent() || isInventory) {
                 Int2ObjectArrayMap<List<SlotModifier>> map = MODIFIERS.computeIfAbsent(menu.orElse(null),
                         i -> new Int2ObjectArrayMap<>());
@@ -76,7 +75,7 @@ public class MenuModifierManager extends SimpleJsonResourceReloadListener {
     }
 
 
-    public static boolean maybeChangeColor(MenuType<?> type, Slot slot, GuiGraphics graphics,
+    public static boolean maybeChangeColor(MenuType<?> type, Slot slot, PoseStack graphics,
                                            int x, int y, int offset) {
         var l = getModifier(type, slot);
         if (l != null) {

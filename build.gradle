@@ -50,11 +50,9 @@ subprojects {
             if (modLoader == "fabric") {
                 dependencies {
                     required.project "fabric-api"
-                    required.project "moonlight"
                 }
             } else {
                 dependencies {
-                    required.project "moonlight"
                 }
             }
         }
@@ -75,38 +73,10 @@ subprojects {
                 if (modLoader == "fabric") {
                     relations {
                         requiredDependency "fabric-api"
-                        requiredDependency "selene"
-
-                        optionalDependency "the-bumblezone-fabric"
-                        optionalDependency "decorative-blocks"
-                        optionalDependency("flan")
-                        optionalDependency("snowy-spirit")
-                        optionalDependency("haunted-harvest")
-                        optionalDependency("model-gap-fix")
-                        optionalDependency("map-atlases")
-                        optionalDependency("farmers-delight-fabric")
                     }
                 } else {
                     relations {
                         requiredDependency("selene")
-
-                        optionalDependency("create")
-                        optionalDependency("quark")
-                        optionalDependency("cc-tweaked")
-                        optionalDependency("waystones")
-                        optionalDependency("roughly-enough-items")
-                        optionalDependency("jei")
-                        optionalDependency("model-gap-fix")
-                        optionalDependency("flywheel")
-                        optionalDependency("configured")
-                        optionalDependency("flan-forge")
-                        optionalDependency("haunted-harvest")
-                        optionalDependency("snowy-spirit")
-                        optionalDependency("map-atlases-forge")
-                        optionalDependency("decorative-blocks")
-                        optionalDependency("farmers-delight")
-                        optionalDependency("the-bumblezone-forge")
-                        optionalDependency("map-atlases-forge")
                     }
                 }
             }
@@ -124,7 +94,6 @@ allprojects {
     archivesBaseName = rootProject.mod_id
     version = rootProject.mod_version
     group = rootProject.mod_group_id
-    required_moonlight_version = rootProject.required_moonlight_version
 
     repositories {
 
