@@ -34,8 +34,6 @@ dependencies {
     modCompileOnly("curse.maven:modmenu-308702:3920481") {
         exclude module: "fabric-api"
     }
-    modImplementation("net.mehvahdjukaar:moonlight-fabric:${rootProject.moonlight_version}")
-
 }
 
 

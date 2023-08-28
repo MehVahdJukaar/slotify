@@ -1,0 +1,14 @@
+{
+  "menu_id": "minecraft:inventory",
+  "modifiers": [
+    {
+      "slots": 8,
+      "color":12312524,
+      "color_2":12312524
+    },
+    {
+      "slots": [9,5,7],
+      "color": 39293242
+    }
+  ]
+}

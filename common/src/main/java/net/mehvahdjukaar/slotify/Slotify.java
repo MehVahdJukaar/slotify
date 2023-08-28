@@ -1,7 +1,7 @@
 package net.mehvahdjukaar.slotify;
 
-import net.mehvahdjukaar.moonlight.api.platform.ClientHelper;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.inventory.MenuType;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -18,12 +18,6 @@ public class Slotify {
 
     public static String str(String n) {
         return MOD_ID + ":" + n;
-    }
-
-    //called on mod creation
-    public static void clientInit() {
-        ClientHelper.addClientReloadListener(MenuModifierManager::new, res("slot_modifiers"));
-
     }
 
 }

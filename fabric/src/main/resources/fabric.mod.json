@@ -15,7 +15,7 @@
   "icon": "icon.png",
   "environment": "*",
   "entrypoints": {
-    "main": [
+    "client": [
       "net.mehvahdjukaar.slotify.fabric.SlotifyFabric"
     ]
   },
@@ -25,8 +25,7 @@
   ],
   "depends": {
     "fabric": "*",
-    "minecraft": ">=${minecraft_min_version} <${minecraft_max_version}",
-    "moonlight": ">=${required_moonlight_version}"
+    "minecraft": ">=${minecraft_min_version} <${minecraft_max_version}"
   },
   "suggests": {
     "sleep_tight": "*"

@@ -64,7 +64,7 @@ public interface TargetSlots {
         public static DataResult<RangeTarget> read(String input) {
             String[] parts = input.split("->");
             if (parts.length != 2) {
-                return DataResult.error(() -> "Invalid format. Expected format: 'x->y'");
+                return DataResult.error(() -> "Invalid format. Expected format: 'xOffset->yOffset'");
             }
             try {
                 int num1 = Integer.parseInt(parts[0]);
