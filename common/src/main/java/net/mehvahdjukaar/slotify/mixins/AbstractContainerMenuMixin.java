@@ -2,9 +2,8 @@ package net.mehvahdjukaar.slotify.mixins;
 
 import com.llamalad7.mixinextras.sugar.Local;
 import com.llamalad7.mixinextras.sugar.ref.LocalRef;
-import net.mehvahdjukaar.slotify.MenuModifierManager;
+import net.mehvahdjukaar.slotify.GuiModifierManager;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.Slot;
 import org.jetbrains.annotations.Nullable;
@@ -30,6 +29,6 @@ public abstract class AbstractContainerMenuMixin {
             require = 1)
     public void interact(Slot slot, CallbackInfoReturnable<Slot> cir,
                          @Local LocalRef<Slot> mutableSlot) {
-        MenuModifierManager.maybeModifySlot(this.menuType, slot);
+        GuiModifierManager.maybeModifySlot((AbstractContainerMenu)(Object)this, slot);
     }
 }

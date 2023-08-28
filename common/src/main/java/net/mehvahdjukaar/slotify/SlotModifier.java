@@ -14,8 +14,8 @@ public final class SlotModifier extends GuiComponent {
 
     public static final Codec<SlotModifier> CODEC = RecordCodecBuilder.create(i -> i.group(
             TargetSlots.CODEC.fieldOf("slots").forGetter(SlotModifier::targets),
-            Codec.INT.optionalFieldOf("color", -1).forGetter(SlotModifier::color),
-            Codec.INT.optionalFieldOf("color_2", -1).forGetter(SlotModifier::color2),
+            ColorUtils.CODEC.optionalFieldOf("color", -1).forGetter(SlotModifier::color),
+            ColorUtils.CODEC.optionalFieldOf("color_2", -1).forGetter(SlotModifier::color2),
             Codec.INT.optionalFieldOf("x_offset", 0).forGetter(SlotModifier::xOffset),
             Codec.INT.optionalFieldOf("y_offset", 0).forGetter(SlotModifier::yOffset)
     ).apply(i, SlotModifier::new));

@@ -1,10 +1,12 @@
 {
-  "menu_id": "minecraft:beacon",
+  "target_type": "menu_id",
+  "target": "minecraft:inventory",
   "modifiers": [
     {
       "slots": "1->4",
       "x_offset": 10,
-      "y_offset": 10
+      "y_offset": 10,
+      "color": -1044481
     },
     {
       "slots": [9,5,7],

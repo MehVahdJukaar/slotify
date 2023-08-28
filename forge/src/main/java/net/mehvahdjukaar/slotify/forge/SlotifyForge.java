@@ -1,6 +1,6 @@
 package net.mehvahdjukaar.slotify.forge;
 
-import net.mehvahdjukaar.slotify.MenuModifierManager;
+import net.mehvahdjukaar.slotify.GuiModifierManager;
 import net.mehvahdjukaar.slotify.Slotify;
 import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -19,7 +19,7 @@ public class SlotifyForge {
 
 
     public static void registerReload(RegisterClientReloadListenersEvent event) {
-        event.registerReloadListener(new MenuModifierManager());
+        event.registerReloadListener(new GuiModifierManager());
     }
 
 
