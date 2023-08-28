@@ -20,6 +20,7 @@ import java.util.*;
 public class MenuModifierManager extends SimpleJsonResourceReloadListener {
 
     private static final Map<MenuType<?>, Int2ObjectArrayMap<List<SlotModifier>>> MODIFIERS = new IdentityHashMap<>();
+    public static final Map<MenuType<?>, MenuModifier> MENU_MODIFIERS = new IdentityHashMap<>();
     private static final ResourceLocation INVENTORY = new ResourceLocation("inventory");
 
 
@@ -27,21 +28,25 @@ public class MenuModifierManager extends SimpleJsonResourceReloadListener {
         super(new GsonBuilder().setPrettyPrinting().create(), "menu_modifiers");
     }
 
+
     @Override
     protected void apply(Map<ResourceLocation, JsonElement> object, ResourceManager resourceManager, ProfilerFiller profiler) {
         MODIFIERS.clear();
-        List<MenuModifier> list = new ArrayList<>();
+        MENU_MODIFIERS.clear();
+        List<MenuModifier> allModifiers = new ArrayList<>();
         for (var o : object.values()) {
             var result = MenuModifier.CODEC.parse(JsonOps.INSTANCE, o);
             MenuModifier modifier = result.getOrThrow(false, e -> Slotify.LOGGER.error("Failed to parse menu modifier: {}", e));
-            list.add(modifier);
+            allModifiers.add(modifier);
         }
-        for (var mod : list) {
+        for (MenuModifier mod : allModifiers) {
             //inventory has a null menu type for some reason
             boolean isInventory = mod.menuId().equals(INVENTORY);
             Optional<MenuType<?>> menu = BuiltInRegistries.MENU.getOptional(mod.menuId());
             if (menu.isPresent() || isInventory) {
-                Int2ObjectArrayMap<List<SlotModifier>> map = MODIFIERS.computeIfAbsent(menu.orElse(null),
+                MenuType<?> menuType = menu.orElse(null);
+                MENU_MODIFIERS.put(menuType, mod);
+                Int2ObjectArrayMap<List<SlotModifier>> map = MODIFIERS.computeIfAbsent(menuType,
                         i -> new Int2ObjectArrayMap<>());
                 for (SlotModifier s : mod.modifiers()) {
                     for (int i : s.targets().getSlots()) {
@@ -89,5 +94,6 @@ public class MenuModifierManager extends SimpleJsonResourceReloadListener {
         }
         return true;
     }
+
 
 }

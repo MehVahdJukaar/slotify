@@ -4,11 +4,14 @@
     {
       "slots": 8,
       "color":12312524,
-      "color_2":12312524
+      "color_2":12312524,
+      "title_y_offset": 4,
+      "label_x_offset": 5
     },
     {
       "slots": [9,5,7],
-      "color": 39293242
+      "color": 39293242,
+      "label_y_offset": 5
     }
   ]
 }

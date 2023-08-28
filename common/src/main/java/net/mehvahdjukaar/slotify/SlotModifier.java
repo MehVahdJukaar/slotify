@@ -3,17 +3,18 @@ package net.mehvahdjukaar.slotify;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.screens.inventory.LoomScreen;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.world.inventory.Slot;
 
-public record SlotModifier(TargetSlots targets, int color, int color2, int xOffset, int yOffset) {
+public record SlotModifier(TargetSlots targets,  int xOffset, int yOffset,int color, int color2) {
 
     public static final Codec<SlotModifier> CODEC = RecordCodecBuilder.create(i -> i.group(
             TargetSlots.CODEC.fieldOf("slots").forGetter(SlotModifier::targets),
-            Codec.INT.optionalFieldOf("color", -1).forGetter(SlotModifier::color),
-            Codec.INT.optionalFieldOf("color_2", -1).forGetter(SlotModifier::color2),
             Codec.INT.optionalFieldOf("x_offset", 0).forGetter(SlotModifier::xOffset),
-            Codec.INT.optionalFieldOf("y_offset", 0).forGetter(SlotModifier::yOffset)
+            Codec.INT.optionalFieldOf("y_offset", 0).forGetter(SlotModifier::yOffset),
+            Codec.INT.optionalFieldOf("color", -1).forGetter(SlotModifier::color),
+            Codec.INT.optionalFieldOf("color_2", -1).forGetter(SlotModifier::color2)
     ).apply(i, SlotModifier::new));
 
     public void modify(Slot slot) {
