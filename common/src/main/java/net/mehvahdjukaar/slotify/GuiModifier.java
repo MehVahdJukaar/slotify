@@ -19,7 +19,7 @@ public record GuiModifier(Type type, String target,
     public static final Codec<GuiModifier> CODEC =
             RecordCodecBuilder.<GuiModifier>create(i -> i.group(
                     StringRepresentable.fromEnum(Type::values).fieldOf("target_type").forGetter(GuiModifier::type),
-                    Codec.STRING.fieldOf("target").forGetter(GuiModifier::target),
+                    Codec.STRING.xmap(PlatStuff::remapName, PlatStuff::remapName).fieldOf("target").forGetter(GuiModifier::target),
                     SlotModifier.CODEC.listOf().optionalFieldOf("slot_modifiers", List.of()).forGetter(GuiModifier::slotModifiers),
                     Codec.INT.optionalFieldOf("title_x_offset", 0).forGetter(GuiModifier::titleX),
                     Codec.INT.optionalFieldOf("title_y_offset", 0).forGetter(GuiModifier::titleY),
@@ -29,11 +29,11 @@ public record GuiModifier(Type type, String target,
             ).apply(i, GuiModifier::new)).comapFlatMap((instance) -> {
                 if (instance.type == Type.MENU_ID) {
                     var error = ResourceLocation.read(instance.target).error();
-                    if (error.isPresent()) return DataResult.error(error.get().message());
+                    if (error.isPresent()) return DataResult.error(error.get()::message);
                 }
                 if (instance.type == Type.SCREEN_CLASS &&
                         instance.slotModifiers.stream().anyMatch(SlotModifier::hasOffset)) {
-                    return DataResult.error("Slot modifiers cannot alter position when using a screen_class target_type. Use menu_id or menu_class instead");
+                    return DataResult.error(()->"Slot modifiers cannot alter position when using a screen_class target_type. Use menu_id or menu_class instead");
                 }
                 return DataResult.success(instance);
             }, Function.identity());

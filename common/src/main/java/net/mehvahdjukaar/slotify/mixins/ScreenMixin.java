@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.mehvahdjukaar.slotify.GuiModifierManager;
 import net.mehvahdjukaar.slotify.SimpleSprite;
 import net.mehvahdjukaar.slotify.SlotifyScreen;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -26,7 +27,7 @@ public abstract class ScreenMixin implements SlotifyScreen {
     }
 
     @Override
-    public void slotify$renderExtraSprites(PoseStack poseStack) {
+    public void slotify$renderExtraSprites(GuiGraphics poseStack) {
         slotify$extraSprites.forEach(r -> r.render(poseStack));
     }
 

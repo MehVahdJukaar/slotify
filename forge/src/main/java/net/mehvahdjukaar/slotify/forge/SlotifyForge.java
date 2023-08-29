@@ -5,7 +5,9 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.mehvahdjukaar.slotify.GuiModifierManager;
 import net.mehvahdjukaar.slotify.Slotify;
 import net.mehvahdjukaar.slotify.SlotifyScreen;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
 import net.minecraftforge.client.event.ScreenEvent;
 import net.minecraftforge.common.MinecraftForge;
@@ -34,11 +36,13 @@ public class SlotifyForge {
         SlotifyScreen ss = (SlotifyScreen) screen;
         if(ss.slotify$hasSprites()) {
 
-            PoseStack poseStack = event.getPoseStack();
-            poseStack.pushPose();
-            poseStack.translate(screen.width / 2F, screen.height / 2F, 500);
-            ss.slotify$renderExtraSprites(poseStack);
-            poseStack.popPose();
+            GuiGraphics guiGraphics = event.getGuiGraphics();
+            PoseStack pose = guiGraphics.pose();
+            pose.pushPose();
+            pose.translate(screen.width / 2F, screen.height / 2F, 500);
+            ss.slotify$renderExtraSprites(guiGraphics);
+            pose.popPose();
+
         }
     }
 

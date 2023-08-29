@@ -27,7 +27,7 @@ public abstract class AbstractContainerMenuMixin {
             target = "Lnet/minecraft/core/NonNullList;add(Ljava/lang/Object;)Z",
             ordinal = 0),
             require = 1)
-    public void interact(Slot slot, CallbackInfoReturnable<Slot> cir,
+    public void modifySlot(Slot slot, CallbackInfoReturnable<Slot> cir,
                          @Local LocalRef<Slot> mutableSlot) {
         GuiModifierManager.maybeModifySlot((AbstractContainerMenu)(Object)this, slot);
     }

@@ -5,9 +5,11 @@ import com.google.gson.JsonElement;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.serialization.JsonOps;
 import it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
@@ -71,7 +73,7 @@ public class GuiModifierManager extends SimpleJsonResourceReloadListener {
             } else {
                 ResourceLocation menuId = new ResourceLocation(mod.target());
                 boolean isInventory = menuId.equals(INVENTORY);
-                Optional<MenuType<?>> menu = Registry.MENU.getOptional(menuId);
+                Optional<MenuType<?>> menu = BuiltInRegistries.MENU.getOptional(menuId);
 
                 if (menu.isPresent() || isInventory) {
                     BY_MENU_ID.merge(menu.orElse(null), new ScreenModifier(mod), (a, b) -> b.merge(a));
@@ -173,7 +175,7 @@ public class GuiModifierManager extends SimpleJsonResourceReloadListener {
         }
     }
 
-    public static boolean maybeChangeColor(AbstractContainerScreen<?> screen, Slot slot, PoseStack graphics,
+    public static boolean maybeChangeColor(AbstractContainerScreen<?> screen, Slot slot, GuiGraphics graphics,
                                            int x, int y, int offset) {
         var mod = getSlotModifier(screen, slot);
         if (mod != null && mod.hasCustomColor()) {

@@ -1,6 +1,7 @@
 package net.mehvahdjukaar.slotify.fabric;
 
 import com.google.common.base.Suppliers;
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
 import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
@@ -27,13 +28,14 @@ public class SlotifyFabric implements ClientModInitializer {
         ScreenEvents.AFTER_INIT.register((client, screen, scaledWidth, scaledHeight) -> {
             if (screen instanceof SlotifyScreen ss) {
                 if (ss.slotify$hasSprites()) {
-                    ScreenEvents.afterRender(screen).register((screen1, matrices, mouseX, mouseY, tickDelta) -> {
+                    ScreenEvents.afterRender(screen).register((screen1, graphics, mouseX, mouseY, tickDelta) -> {
 
-                        matrices.pushPose();
-                        matrices.translate(scaledWidth / 2F, scaledHeight / 2F, 500);
+                        PoseStack pose = graphics.pose();
+                        pose.pushPose();
+                        pose.translate(scaledWidth / 2F, scaledHeight / 2F, 500);
 
-                        ss.slotify$renderExtraSprites(matrices);
-                        matrices.popPose();
+                        ss.slotify$renderExtraSprites(graphics);
+                        pose.popPose();
                     });
                 }
             }

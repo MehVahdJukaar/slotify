@@ -1,10 +1,10 @@
 package net.mehvahdjukaar.slotify;
 
-import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.GuiGraphics;
 
 public interface SlotifyScreen {
 
-    void slotify$renderExtraSprites(PoseStack poseStack);
+    void slotify$renderExtraSprites(GuiGraphics graphics);
 
     boolean slotify$hasSprites();
 }
