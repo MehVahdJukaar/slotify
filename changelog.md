@@ -1,1 +1,1 @@
-fixes
+added target_class_name, target_x and target_y optional params to slots modifiers
