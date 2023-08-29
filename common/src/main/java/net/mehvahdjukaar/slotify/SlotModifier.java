@@ -7,10 +7,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.world.inventory.Slot;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 public final class SlotModifier extends GuiComponent {
 
@@ -19,23 +16,40 @@ public final class SlotModifier extends GuiComponent {
             ColorUtils.CODEC.optionalFieldOf("color", -1).forGetter(SlotModifier::color),
             ColorUtils.CODEC.optionalFieldOf("color_2", -1).forGetter(SlotModifier::color2),
             Codec.INT.optionalFieldOf("x_offset", 0).forGetter(SlotModifier::xOffset),
-            Codec.INT.optionalFieldOf("y_offset", 0).forGetter(SlotModifier::yOffset)
+            Codec.INT.optionalFieldOf("y_offset", 0).forGetter(SlotModifier::yOffset),
+            Codec.INT.optionalFieldOf("target_x").forGetter(SlotModifier::targetX),
+            Codec.INT.optionalFieldOf("target_y").forGetter(SlotModifier::targetY),
+            Codec.STRING.xmap(PlatStuff::remapName, PlatStuff::remapName).optionalFieldOf("target_class_name").forGetter(SlotModifier::targetClass)
     ).apply(i, SlotModifier::new));
     private final TargetSlots targets;
     private final int color;
     private final int color2;
     private final int xOffset;
     private final int yOffset;
+    private final Optional<Integer> targetX;
+    private final Optional<Integer> targetY;
+    private final Optional<String> targetClass;
 
-    public SlotModifier(TargetSlots targets, int color, int color2, int xOffset, int yOffset) {
+    public SlotModifier(TargetSlots targets, int color, int color2, int xOffset, int yOffset,
+                        Optional<Integer> targetX, Optional<Integer> targetY, Optional<String> targetClass) {
         this.targets = targets;
         this.color = color;
         this.color2 = color2;
         this.xOffset = xOffset;
         this.yOffset = yOffset;
+        this.targetX = targetX;
+        this.targetY = targetY;
+        this.targetClass = targetClass;
     }
 
     public void modify(Slot slot) {
+        if (targetX.isPresent() && slot.x != targetX.get()) return;
+        if (targetY.isPresent() && slot.y != targetY.get()) return;
+        if (targetClass.isPresent()) {
+            String name = targetClass.get();
+            if (!slot.getClass().getSimpleName().equals(name) &&
+                    !slot.getClass().getName().equals(name)) return;
+        }
         slot.x += this.xOffset;
         slot.y += this.yOffset;
     }
@@ -44,39 +58,19 @@ public final class SlotModifier extends GuiComponent {
         return color != -1 || color2 != -1;
     }
 
-    public void renderCustomHighlight(PoseStack poseStack, int x, int y, int offset) {
+    public void renderCustomHighlight(PoseStack graphics, int x, int y, int offset) {
         int c1 = color;
         int c2 = color2 == -1 ? color : color2;
-        renderSlotHighlight2(poseStack, x, y, c1, c2, offset);
+        renderSlotHighlight2(graphics, x, y, c1, c2, offset);
     }
 
-    public static void renderSlotHighlight2(PoseStack arg, int x, int y,
+    public static void renderSlotHighlight2(PoseStack graphics, int x, int y,
                                             int slotColor, int slotColor2, int offset) {
         RenderSystem.disableDepthTest();
         RenderSystem.colorMask(true, true, true, false);
-        fillGradient(arg, x, y, x + 16, y + 16, slotColor, slotColor2, offset);
+        fillGradient(graphics, x, y, x + 16, y + 16, slotColor, slotColor2, offset);
         RenderSystem.colorMask(true, true, true, true);
         RenderSystem.enableDepthTest();
-    }
-
-    public TargetSlots targets() {
-        return targets;
-    }
-
-    public int color() {
-        return color;
-    }
-
-    public int color2() {
-        return color2;
-    }
-
-    public int xOffset() {
-        return xOffset;
-    }
-
-    public int yOffset() {
-        return yOffset;
     }
 
     @Override
@@ -89,11 +83,6 @@ public final class SlotModifier extends GuiComponent {
                 this.color2 == that.color2 &&
                 this.xOffset == that.xOffset &&
                 this.yOffset == that.yOffset;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(targets, color, color2, xOffset, yOffset);
     }
 
     @Override
@@ -120,7 +109,48 @@ public final class SlotModifier extends GuiComponent {
                 other.hasCustomColor() ? other.color : this.color,
                 other.hasCustomColor() ? other.color2 : this.color,
                 other.hasOffset() ? other.xOffset : this.xOffset,
-                other.hasOffset() ? other.yOffset : this.yOffset
+                other.hasOffset() ? other.yOffset : this.yOffset,
+                other.targetX,
+                other.targetY,
+                other.targetClass
         );
     }
+
+    public TargetSlots targets() {
+        return targets;
+    }
+
+    public int color() {
+        return color;
+    }
+
+    public int color2() {
+        return color2;
+    }
+
+    public int xOffset() {
+        return xOffset;
+    }
+
+    public int yOffset() {
+        return yOffset;
+    }
+
+    public Optional<Integer> targetX() {
+        return targetX;
+    }
+
+    public Optional<Integer> targetY() {
+        return targetY;
+    }
+
+    public Optional<String> targetClass() {
+        return targetClass;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(targets, color, color2, xOffset, yOffset, targetX, targetY, targetClass);
+    }
+
 }

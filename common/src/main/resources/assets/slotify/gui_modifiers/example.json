@@ -14,6 +14,12 @@
       "y_offset": 7
     }
   ],
+  "special_offsets": {
+    "player": {
+      "x_offset": 22,
+      "y_offset": 0
+    }
+  },
   "sprites": [
     {
       "x": 20,

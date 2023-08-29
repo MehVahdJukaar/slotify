@@ -16,8 +16,8 @@ public interface TargetSlots {
 
     Codec<TargetSlots> CODEC = new Codec<>() {
 
-        final Codec<SingleTarget> c1 = ExtraCodecs.POSITIVE_INT.xmap(SingleTarget::new, SingleTarget::slot);
-        final Codec<ListTarget> c2 = ExtraCodecs.POSITIVE_INT.listOf().xmap(ListTarget::new, ListTarget::slots);
+        final Codec<SingleTarget> c1 = ExtraCodecs.NON_NEGATIVE_INT.xmap(SingleTarget::new, SingleTarget::slot);
+        final Codec<ListTarget> c2 = ExtraCodecs.NON_NEGATIVE_INT.listOf().xmap(ListTarget::new, ListTarget::slots);
         final Codec<RangeTarget> c3 = Codec.STRING.comapFlatMap(RangeTarget::read, RangeTarget::toString);
 
         @Override
@@ -69,6 +69,7 @@ public interface TargetSlots {
             try {
                 int num1 = Integer.parseInt(parts[0]);
                 int num2 = Integer.parseInt(parts[1]);
+                if(num1 <0 || num2 < 0) return DataResult.error("Slots must be positive");
                 if (num2 <= num1) return DataResult.error("Invalid range, min must be smaller than max");
                 return DataResult.success(new RangeTarget(num1, num2));
             } catch (NumberFormatException e) {

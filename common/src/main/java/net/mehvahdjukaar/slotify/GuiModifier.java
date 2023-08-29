@@ -8,13 +8,15 @@ import net.minecraft.util.StringRepresentable;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.function.Function;
 
 //instance persists just during deserialization. we could have used decoder only
 public record GuiModifier(Type type, String target,
                           List<SlotModifier> slotModifiers,
                           int titleX, int titleY, int labelX, int labelY,
-                          List<SimpleSprite> sprites) {
+                          List<SimpleSprite> sprites,
+                          Map<String, SpecialOffset> specialOffsets) {
 
     public static final Codec<GuiModifier> CODEC =
             RecordCodecBuilder.<GuiModifier>create(i -> i.group(
@@ -25,7 +27,9 @@ public record GuiModifier(Type type, String target,
                     Codec.INT.optionalFieldOf("title_y_offset", 0).forGetter(GuiModifier::titleY),
                     Codec.INT.optionalFieldOf("label_x_offset", 0).forGetter(GuiModifier::labelX),
                     Codec.INT.optionalFieldOf("label_y_offset", 0).forGetter(GuiModifier::labelY),
-                    SimpleSprite.CODEC.listOf().optionalFieldOf("sprites", List.of()).forGetter(GuiModifier::sprites)
+                    SimpleSprite.CODEC.listOf().optionalFieldOf("sprites", List.of()).forGetter(GuiModifier::sprites),
+                    Codec.unboundedMap(Codec.STRING, SpecialOffset.CODEC).optionalFieldOf("special_offsets", Map.of()).forGetter(GuiModifier::specialOffsets)
+
             ).apply(i, GuiModifier::new)).comapFlatMap((instance) -> {
                 if (instance.type == Type.MENU_ID) {
                     var error = ResourceLocation.read(instance.target).error();
@@ -53,6 +57,7 @@ public record GuiModifier(Type type, String target,
     public boolean targetsClass() {
         return type != Type.MENU_ID;
     }
+
 
 }
 

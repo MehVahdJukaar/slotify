@@ -7,4 +7,6 @@ public interface SlotifyScreen {
     void slotify$renderExtraSprites(PoseStack poseStack);
 
     boolean slotify$hasSprites();
+
+    ScreenModifier slotify$getModifier();
 }

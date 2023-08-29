@@ -21,7 +21,6 @@ import java.util.*;
 
 public class GuiModifierManager extends SimpleJsonResourceReloadListener {
 
-    //TODO: merge modifiers
     private static final Map<MenuType<?>, Int2ObjectArrayMap<SlotModifier>> SLOTS_BY_MENU_ID = new IdentityHashMap<>();
     private static final Map<Class<?>, Int2ObjectArrayMap<SlotModifier>> SLOTS_BY_CLASS = new IdentityHashMap<>();
     public static final Map<MenuType<?>, ScreenModifier> BY_MENU_ID = new IdentityHashMap<>();
@@ -182,14 +181,4 @@ public class GuiModifierManager extends SimpleJsonResourceReloadListener {
         }
         return true;
     }
-
-
-    public static Collection<SimpleSprite> getExtraSprites(Screen screen) {
-        var m = getGuiModifier(screen);
-        if (m != null) {
-            return m.sprites();
-        }
-        return List.of();
-    }
-
 }
