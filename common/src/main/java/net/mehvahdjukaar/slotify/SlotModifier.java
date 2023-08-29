@@ -4,11 +4,13 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.world.inventory.Slot;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 public final class SlotModifier extends GuiComponent {
 
@@ -49,7 +51,7 @@ public final class SlotModifier extends GuiComponent {
     }
 
     public static void renderSlotHighlight2(PoseStack arg, int x, int y,
-                                           int slotColor, int slotColor2, int offset) {
+                                            int slotColor, int slotColor2, int offset) {
         RenderSystem.disableDepthTest();
         RenderSystem.colorMask(true, true, true, false);
         fillGradient(arg, x, y, x + 16, y + 16, slotColor, slotColor2, offset);
@@ -104,4 +106,21 @@ public final class SlotModifier extends GuiComponent {
                 "yOffset=" + yOffset + ']';
     }
 
+    public boolean hasOffset() {
+        return xOffset != 0 || yOffset != 0;
+    }
+
+    public SlotModifier merge(SlotModifier other) {
+        Set<Integer> combinedSlots = new HashSet<>();
+
+        this.targets.getSlots().forEach(combinedSlots::add);
+        other.targets.getSlots().forEach(combinedSlots::add);
+
+        return new SlotModifier(new TargetSlots.ListTarget(new ArrayList<>(combinedSlots)),
+                other.hasCustomColor() ? other.color : this.color,
+                other.hasCustomColor() ? other.color2 : this.color,
+                other.hasOffset() ? other.xOffset : this.xOffset,
+                other.hasOffset() ? other.yOffset : this.yOffset
+        );
+    }
 }

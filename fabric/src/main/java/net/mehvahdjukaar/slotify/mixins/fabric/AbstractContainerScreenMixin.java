@@ -41,24 +41,12 @@ public abstract class AbstractContainerScreenMixin<T extends AbstractContainerMe
     ))
     public boolean slotifyColor(PoseStack poseStack, int x, int y, int blitOffset,
                                 @Local Slot slot){
-        MenuType<?> type;
-        try{
-            type = this.menu.getType();
-        }catch (Exception e){
-            type = null;
-        }
-        return GuiModifierManager.maybeChangeColor(type, slot, poseStack, x, y, blitOffset);
+        return GuiModifierManager.maybeChangeColor((AbstractContainerScreen<?>) (Object)this, slot, poseStack, x, y, blitOffset);
     }
 
     @Inject(method = "init", at = @At("TAIL"))
     public void modifyLabels(CallbackInfo ci){
-        MenuType<?> type;
-        try{
-            type = this.menu.getType();
-        }catch (Exception e){
-            type = null;
-        }
-       var m = GuiModifierManager.BY_MENU_ID.get(type);
+        var m = GuiModifierManager.getGuiModifier((AbstractContainerScreen<?>) (Object)this);
         if(m != null){
             this.titleLabelX += m.titleX();
             this.titleLabelY += m.titleY();

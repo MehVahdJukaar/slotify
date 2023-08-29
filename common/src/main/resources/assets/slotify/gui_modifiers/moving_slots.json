@@ -1,17 +1,27 @@
 {
   "target_type": "menu_id",
   "target": "minecraft:inventory",
-  "modifiers": [
+  "slot_modifiers": [
     {
       "slots": "1->4",
       "x_offset": 10,
       "y_offset": 10,
-      "color": -1044481
+      "color": "#ff00ffff"
     },
     {
       "slots": [9,5,7],
       "x_offset": 20,
       "y_offset": 7
+    }
+  ],
+  "sprites": [
+    {
+      "x": 20,
+      "y": 20,
+      "z": 20,
+      "width": 20,
+      "height": 20,
+      "texture": "textures/block/stone.png"
     }
   ]
 }
