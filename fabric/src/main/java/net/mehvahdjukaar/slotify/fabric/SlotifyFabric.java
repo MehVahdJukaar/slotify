@@ -22,18 +22,18 @@ public class SlotifyFabric implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
-        addClientReloadListener(GuiModifierManager::new, Slotify.res("slot_modifiers"));
+        addClientReloadListener(GuiModifierManager::new, Slotify.res("gui_modifiers"));
         ScreenEvents.AFTER_INIT.register((client, screen, scaledWidth, scaledHeight) -> {
             if (screen instanceof SlotifyScreen ss) {
                 if (ss.slotify$hasSprites()) {
                     ScreenEvents.afterRender(screen).register((screen1, matrices, mouseX, mouseY, tickDelta) -> {
 
-                        matrices.translate(scaledWidth / 2F, scaledHeight / 2F, screen1.getBlitOffset());
+                        matrices.pushPose();
+                        matrices.translate(scaledWidth / 2F, scaledHeight / 2F, 500);
 
                         ss.slotify$renderExtraSprites(matrices);
-
+                        matrices.popPose();
                     });
-
                 }
             }
         });

@@ -1,2 +1,1 @@
-- added ability to change slot colors
-- you can target inventory menu using "minecraft:inventory"
+fixes

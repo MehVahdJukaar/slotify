@@ -1,5 +1,6 @@
 package net.mehvahdjukaar.slotify.forge;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.mehvahdjukaar.slotify.GuiModifierManager;
 import net.mehvahdjukaar.slotify.Slotify;
@@ -34,9 +35,10 @@ public class SlotifyForge {
         if(ss.slotify$hasSprites()) {
 
             PoseStack poseStack = event.getPoseStack();
-            poseStack.translate(screen.width / 2F, screen.height / 2F, screen.getBlitOffset());
-
+            poseStack.pushPose();
+            poseStack.translate(screen.width / 2F, screen.height / 2F, 500);
             ss.slotify$renderExtraSprites(poseStack);
+            poseStack.popPose();
         }
     }
 
