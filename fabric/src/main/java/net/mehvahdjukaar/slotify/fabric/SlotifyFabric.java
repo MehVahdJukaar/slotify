@@ -8,6 +8,7 @@ import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.mehvahdjukaar.slotify.GuiModifierManager;
 import net.mehvahdjukaar.slotify.Slotify;
 import net.mehvahdjukaar.slotify.SlotifyScreen;
+import net.minecraft.client.gui.screens.inventory.SignEditScreen;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.resources.PreparableReloadListener;
