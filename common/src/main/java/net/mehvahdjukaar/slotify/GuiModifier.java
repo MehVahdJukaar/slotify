@@ -16,6 +16,7 @@ public record GuiModifier(Type type, String target,
                           List<SlotModifier> slotModifiers,
                           int titleX, int titleY, int labelX, int labelY,
                           List<SimpleSprite> sprites,
+                          List<WidgetModifier> widgetModifiers,
                           Map<String, SpecialOffset> specialOffsets) {
 
     public static final Codec<GuiModifier> CODEC =
@@ -28,6 +29,7 @@ public record GuiModifier(Type type, String target,
                     Codec.INT.optionalFieldOf("label_x_offset", 0).forGetter(GuiModifier::labelX),
                     Codec.INT.optionalFieldOf("label_y_offset", 0).forGetter(GuiModifier::labelY),
                     SimpleSprite.CODEC.listOf().optionalFieldOf("sprites", List.of()).forGetter(GuiModifier::sprites),
+                    WidgetModifier.CODEC.listOf().optionalFieldOf("widget_modifiers", List.of()).forGetter(GuiModifier::widgetModifiers),
                     Codec.unboundedMap(Codec.STRING, SpecialOffset.CODEC).optionalFieldOf("special_offsets", Map.of()).forGetter(GuiModifier::specialOffsets)
 
             ).apply(i, GuiModifier::new)).comapFlatMap((instance) -> {

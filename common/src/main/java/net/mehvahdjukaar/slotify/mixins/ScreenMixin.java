@@ -4,12 +4,19 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.mehvahdjukaar.slotify.GuiModifierManager;
 import net.mehvahdjukaar.slotify.ScreenModifier;
 import net.mehvahdjukaar.slotify.SlotifyScreen;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.components.AbstractWidget;
+import net.minecraft.client.gui.components.Widget;
+import net.minecraft.client.gui.components.events.GuiEventListener;
+import net.minecraft.client.gui.narration.NarratableEntry;
 import net.minecraft.client.gui.screens.Screen;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(Screen.class)
 public abstract class ScreenMixin implements SlotifyScreen {
@@ -36,4 +43,23 @@ public abstract class ScreenMixin implements SlotifyScreen {
     public ScreenModifier slotify$getModifier() {
         return slotify$modifier;
     }
+
+    @Inject(method = "addWidget", at = @At("HEAD"))
+    public <T extends GuiEventListener & NarratableEntry> void modifyWidget(T listener, CallbackInfoReturnable<T> cir) {
+        if (slotify$modifier != null && listener instanceof AbstractWidget aw) {
+            for (var m : slotify$modifier.widgetModifiers()) {
+                m.maybeModify(aw);
+            }
+        }
+    }
+
+    @Inject(method = "addRenderableOnly", at = @At("HEAD"))
+    public <T extends Widget> void modifyWidget(T listener, CallbackInfoReturnable<T> cir) {
+        if (slotify$modifier != null && listener instanceof AbstractWidget aw) {
+            for (var m : slotify$modifier.widgetModifiers()) {
+                m.maybeModify(aw);
+            }
+        }
+    }
+
 }

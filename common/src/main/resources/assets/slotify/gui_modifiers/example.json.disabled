@@ -20,6 +20,17 @@
       "y_offset": 0
     }
   },
+  "widget_modifiers": [
+    {
+      "x_offset": 5,
+      "target_x": 2,
+      "target_y": 2,
+      "target_message": "done",
+      "target_width": 4,
+      "width_increment": 4,
+      "target_class_name": "Button"
+    }
+  ],
   "sprites": [
     {
       "x": 20,
