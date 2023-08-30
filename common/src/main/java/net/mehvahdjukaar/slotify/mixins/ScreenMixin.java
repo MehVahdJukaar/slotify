@@ -45,7 +45,7 @@ public abstract class ScreenMixin implements SlotifyScreen {
     }
 
     @Inject(method = "addWidget", at = @At("HEAD"))
-    public <T extends GuiEventListener & NarratableEntry> void modifyWidget(T listener, CallbackInfoReturnable<T> cir) {
+    public <T extends GuiEventListener & NarratableEntry> void modifyWidget2(T listener, CallbackInfoReturnable<T> cir) {
         if (slotify$modifier != null && listener instanceof AbstractWidget aw) {
             for (var m : slotify$modifier.widgetModifiers()) {
                 m.maybeModify(aw);
@@ -54,7 +54,7 @@ public abstract class ScreenMixin implements SlotifyScreen {
     }
 
     @Inject(method = "addRenderableOnly", at = @At("HEAD"))
-    public <T extends Widget> void modifyWidget(T listener, CallbackInfoReturnable<T> cir) {
+    public <T extends Widget> void modifyRenderable(T listener, CallbackInfoReturnable<T> cir) {
         if (slotify$modifier != null && listener instanceof AbstractWidget aw) {
             for (var m : slotify$modifier.widgetModifiers()) {
                 m.maybeModify(aw);

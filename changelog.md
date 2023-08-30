@@ -1,7 +1,1 @@
-you can move player in inventory with
-"special_offsets": {
-    "player": {
-        "x_offset": 22,
-        "y_offset": 0
-    }
-},
+mixin not working fix attempt
