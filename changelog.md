@@ -1,1 +1,1 @@
-mixin not working fix attempt
+added curios compat
