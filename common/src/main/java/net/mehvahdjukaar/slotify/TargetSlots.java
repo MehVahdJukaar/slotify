@@ -45,7 +45,7 @@ public interface TargetSlots {
                 } else target = r2.get().getFirst();
             } else target = r1.get().getFirst();
             if (target != null) return DataResult.success(Pair.of(target, input));
-            return DataResult.error("Failed to decode SlotTarget. Must either be an int, an array or a range (i.e. '3->7')");
+            return DataResult.error(()->"Failed to decode SlotTarget. Must either be an int, an array or a range (i.e. '3->7')");
         }
     };
 
@@ -64,16 +64,16 @@ public interface TargetSlots {
         public static DataResult<RangeTarget> read(String input) {
             String[] parts = input.split("->");
             if (parts.length != 2) {
-                return DataResult.error("Invalid format. Expected format: 'xOffset->yOffset'");
+                return DataResult.error(()->"Invalid format. Expected format: 'xOffset->yOffset'");
             }
             try {
                 int num1 = Integer.parseInt(parts[0]);
                 int num2 = Integer.parseInt(parts[1]);
-                if(num1 <0 || num2 < 0) return DataResult.error("Slots must be positive");
-                if (num2 <= num1) return DataResult.error("Invalid range, min must be smaller than max");
+                if(num1 <0 || num2 < 0) return DataResult.error(()->"Slots must be positive");
+                if (num2 <= num1) return DataResult.error(()->"Invalid range, min must be smaller than max");
                 return DataResult.success(new RangeTarget(num1, num2));
             } catch (NumberFormatException e) {
-                return DataResult.error("Invalid number format. Both numbers should be integers.");
+                return DataResult.error(()->"Invalid number format. Both numbers should be integers.");
             }
         }
     }

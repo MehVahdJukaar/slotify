@@ -5,6 +5,7 @@ import com.llamalad7.mixinextras.sugar.Local;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.mehvahdjukaar.slotify.GuiModifierManager;
 import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.MenuAccess;
@@ -40,10 +41,10 @@ public abstract class AbstractContainerScreenMixin<T extends AbstractContainerMe
     }
 
     @WrapWithCondition(method = "render", at = @At(
-            target = "Lnet/minecraft/client/gui/screens/inventory/AbstractContainerScreen;renderSlotHighlight(Lcom/mojang/blaze3d/vertex/PoseStack;IIII)V",
+            target = "Lnet/minecraft/client/gui/screens/inventory/AbstractContainerScreen;renderSlotHighlight(Lnet/minecraft/client/gui/GuiGraphics;IIII)V",
             value = "INVOKE"
     ))
-    public boolean slotifyColor(PoseStack poseStack, int x, int y, int blitOffset, int color,
+    public boolean slotifyColor(GuiGraphics poseStack, int x, int y, int blitOffset, int color,
                                 @Local Slot slot) {
         return GuiModifierManager.maybeChangeColor((AbstractContainerScreen<?>) (Object)this, slot, poseStack, x, y, blitOffset);
     }

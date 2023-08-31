@@ -1,15 +1,12 @@
 package net.mehvahdjukaar.slotify;
 
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.network.chat.Component;
-import net.minecraft.util.ExtraCodecs;
 
-import java.util.*;
+import java.util.Optional;
 import java.util.function.Function;
 
 public record WidgetModifier(int xOffset, int yOffset,
@@ -34,14 +31,14 @@ public record WidgetModifier(int xOffset, int yOffset,
             Codec.STRING.xmap(PlatStuff::remapName, PlatStuff::remapName).optionalFieldOf("target_class_name").forGetter(WidgetModifier::targetClass)
     ).apply(i, WidgetModifier::new)).comapFlatMap(o -> {
         if (o.targetW.isEmpty() && o.targetH.isEmpty() && o.targetX.isEmpty() && o.targetY.isEmpty() && o.targetMessage.isEmpty()) {
-            return DataResult.error("Widget modifier must have at least one target");
+            return DataResult.error(() -> "Widget modifier must have at least one target");
         }
         return DataResult.success(o);
     }, Function.identity());
 
     public void maybeModify(AbstractWidget widget) {
-        if (targetX.isPresent() && widget.x != targetX.get()) return;
-        if (targetY.isPresent() && widget.y != targetY.get()) return;
+        if (targetX.isPresent() && widget.getX() != targetX.get()) return;
+        if (targetY.isPresent() && widget.getY() != targetY.get()) return;
         if (targetH.isPresent() && widget.getHeight() != targetH.get()) return;
         if (targetW.isPresent() && widget.getWidth() != targetW.get()) return;
         if (targetMessage.isPresent() && !widget.getMessage().getString().equals(targetMessage.get())) return;
@@ -50,8 +47,8 @@ public record WidgetModifier(int xOffset, int yOffset,
             if (!widget.getClass().getSimpleName().equals(name) &&
                     !widget.getClass().getName().equals(name)) return;
         }
-        widget.x += this.xOffset;
-        widget.y += this.yOffset;
+        widget.setX(widget.getX() + this.xOffset);
+        widget.setY(widget.getY() + this.yOffset);
         widget.setWidth(widget.getWidth() + this.width);
 
         message.ifPresent(s -> widget.setMessage(Component.translatable(s)));

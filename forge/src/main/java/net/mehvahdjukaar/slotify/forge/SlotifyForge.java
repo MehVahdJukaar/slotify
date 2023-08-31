@@ -34,7 +34,7 @@ public class SlotifyForge {
         SlotifyScreen ss = (SlotifyScreen) screen;
         if(ss.slotify$hasSprites()) {
 
-            PoseStack poseStack = event.getPoseStack();
+            PoseStack poseStack = event.getGuiGraphics().pose();
             poseStack.pushPose();
             poseStack.translate(screen.width / 2F, screen.height / 2F, 500);
             ss.slotify$renderExtraSprites(poseStack);

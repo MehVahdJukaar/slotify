@@ -1,1 +1,1 @@
-added curios compat
+updated to be on pair with 1.19

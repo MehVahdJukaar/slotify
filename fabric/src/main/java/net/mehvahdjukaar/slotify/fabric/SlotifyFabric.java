@@ -26,8 +26,9 @@ public class SlotifyFabric implements ClientModInitializer {
         ScreenEvents.AFTER_INIT.register((client, screen, scaledWidth, scaledHeight) -> {
             if (screen instanceof SlotifyScreen ss) {
                 if (ss.slotify$hasSprites()) {
-                    ScreenEvents.afterRender(screen).register((screen1, matrices, mouseX, mouseY, tickDelta) -> {
+                    ScreenEvents.afterRender(screen).register((screen1, graphics, mouseX, mouseY, tickDelta) -> {
 
+                        var matrices = graphics.pose();
                         matrices.pushPose();
                         matrices.translate(scaledWidth / 2F, scaledHeight / 2F, 500);
 
