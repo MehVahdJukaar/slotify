@@ -1,18 +1,20 @@
 package net.mehvahdjukaar.slotify.mixins;
 
 import net.mehvahdjukaar.slotify.SlotifyScreen;
-import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Pseudo;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyArgs;
 import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
+import top.theillusivec4.curios.client.gui.CuriosScreen;
 
-@Mixin(InventoryScreen.class)
-public abstract class InventoryScreenMixin {
+@Pseudo
+@Mixin(CuriosScreen.class)
+public abstract class CurioInventoryScreenMixin {
 
-    @ModifyArgs( method = "renderBg", at = @At(value = "INVOKE",
-            target = "Lnet/minecraft/client/gui/screens/inventory/InventoryScreen;renderEntityInInventoryFollowsMouse(Lnet/minecraft/client/gui/GuiGraphics;IIIFFLnet/minecraft/world/entity/LivingEntity;)V"))
+    @ModifyArgs( method =  "m_7286_", at = @At(value = "INVOKE",
+            target = "Lnet/minecraft/client/gui/screens/inventory/InventoryScreen;m_274545_(Lnet/minecraft/client/gui/GuiGraphics;IIIFFLnet/minecraft/world/entity/LivingEntity;)V")
+    )
     public void modifyRenderEntityI(Args args) {
         var m = ((SlotifyScreen) this).slotify$getModifier();
         if (m != null) {

@@ -13,7 +13,7 @@ import org.joml.Matrix4f;
 import java.util.Optional;
 
 public record SimpleSprite(ResourceLocation texture, int x, int y, int width, int height, int z,
-                           Optional<String> tooltip, Optional<ScreenSupplier> screenSupp) {
+                           Optional<String> tooltip){//, Optional<ScreenSupplier> screenSupp) {
 
     public static final Codec<SimpleSprite> CODEC = RecordCodecBuilder.create(i -> i.group(
             ResourceLocation.CODEC.fieldOf("texture").forGetter(SimpleSprite::texture),
@@ -22,28 +22,12 @@ public record SimpleSprite(ResourceLocation texture, int x, int y, int width, in
             Codec.INT.fieldOf("width").forGetter(SimpleSprite::width),
             Codec.INT.fieldOf("height").forGetter(SimpleSprite::height),
             Codec.INT.optionalFieldOf("z_offset", 0).forGetter(SimpleSprite::z),
-            Codec.STRING.optionalFieldOf("tooltip").forGetter(SimpleSprite::tooltip),
-            Codec.STRING.xmap(ScreenSupplier::decode, ScreenSupplier::toString)
-                    .optionalFieldOf("screen_class").forGetter(SimpleSprite:: screenSupp)
+            Codec.STRING.optionalFieldOf("tooltip").forGetter(SimpleSprite::tooltip)
+           // Codec.STRING.xmap(ScreenSupplier::decode, ScreenSupplier::toString).f
+                 //   .optionalFieldOf("screen_class").forGetter(SimpleSprite:: screenSupp)
     ).apply(i, SimpleSprite::new));
 
 
-    class  ScreenSupplier{
-        private static Optional<ScreenSupplier> decode(String s) {
-            try {
-                var cl =   Class.forName(PlatStuff.remapName(s));
-                cl.g
-            } catch (ClassNotFoundException e) {
-                throw new RuntimeException(e);
-            }
-
-        }
-
-        @Override
-        public String toString() {
-            return super.toString();
-        }
-    }
 
     public void render(PoseStack poseStack) {
         RenderSystem.setShaderTexture(0, texture);
