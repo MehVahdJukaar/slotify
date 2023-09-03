@@ -28,7 +28,7 @@ public record WidgetModifier(int xOffset, int yOffset,
             Codec.INT.optionalFieldOf("target_width").forGetter(WidgetModifier::targetY),
             Codec.INT.optionalFieldOf("target_height").forGetter(WidgetModifier::targetY),
             Codec.STRING.optionalFieldOf("target_message").forGetter(WidgetModifier::targetMessage),
-            Codec.STRING.xmap(PlatStuff::remapName, PlatStuff::remapName).optionalFieldOf("target_class_name").forGetter(WidgetModifier::targetClass)
+            Codec.STRING.xmap(PlatStuff::maybeRemapName, PlatStuff::maybeRemapName).optionalFieldOf("target_class_name").forGetter(WidgetModifier::targetClass)
     ).apply(i, WidgetModifier::new)).comapFlatMap(o -> {
         if (o.targetW.isEmpty() && o.targetH.isEmpty() && o.targetX.isEmpty() && o.targetY.isEmpty() && o.targetMessage.isEmpty()) {
             return DataResult.error(() -> "Widget modifier must have at least one target");

@@ -46,7 +46,7 @@ public class GuiModifierManager extends SimpleJsonResourceReloadListener {
         BY_CLASS.clear();
 
         List<GuiModifier> allModifiers = new ArrayList<>();
-        for (var o : object.values()) {
+         for (var o : object.values()) {
             var result = GuiModifier.CODEC.parse(JsonOps.INSTANCE, o);
             GuiModifier modifier = result.getOrThrow(false, e -> Slotify.LOGGER.error("Failed to parse menu modifier: {}", e));
             allModifiers.add(modifier);
@@ -107,12 +107,15 @@ public class GuiModifierManager extends SimpleJsonResourceReloadListener {
     }
 
     private static ScreenModifier getScreenModifier(AbstractContainerScreen<?> screen) {
-        ScreenModifier m;
-        m = BY_CLASS.get(screen.getMenu().getClass());
+        ScreenModifier m = null;
+        AbstractContainerMenu menu = screen.getMenu();
+        if(menu != null) {
+            m = BY_CLASS.get(menu.getClass());
+        }
         if (m == null) {
             MenuType<?> type;
             try {
-                type = screen.getMenu().getType();
+                type = menu.getType();
             } catch (Exception e) {
                 type = null;
             }

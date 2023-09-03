@@ -1,1 +1,1 @@
-updated to be on pair with 1.19 again
+big fixes. fabric can now also uses mapped class names (offical ones)

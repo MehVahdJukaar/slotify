@@ -18,8 +18,8 @@ public abstract class InventoryScreenMixin {
         if (m != null) {
             var s = m.getSpecial("player");
             if (s != null) {
-                args.set(0, (int) args.get(0) + s.x());
-                args.set(1, (int) args.get(1) + s.y());
+                args.set(0, (int) args.get(1) + s.x());
+                args.set(1, (int) args.get(2) + s.y());
             }
         }
     }

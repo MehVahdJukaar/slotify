@@ -22,7 +22,7 @@ public record SlotModifier(TargetSlots targets, int color, int color2, int xOffs
             Codec.INT.optionalFieldOf("y_offset", 0).forGetter(SlotModifier::yOffset),
             Codec.INT.optionalFieldOf("target_x").forGetter(SlotModifier::targetX),
             Codec.INT.optionalFieldOf("target_y").forGetter(SlotModifier::targetY),
-            Codec.STRING.xmap(PlatStuff::remapName, PlatStuff::remapName).optionalFieldOf("target_class_name").forGetter(SlotModifier::targetClass)
+            Codec.STRING.xmap(PlatStuff::maybeRemapName, PlatStuff::maybeRemapName).optionalFieldOf("target_class_name").forGetter(SlotModifier::targetClass)
     ).apply(i, SlotModifier::new));
 
     public void modify(Slot slot) {
