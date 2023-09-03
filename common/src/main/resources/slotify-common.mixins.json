@@ -6,6 +6,7 @@
   "client": [
     "AbstractContainerMenuMixin",
     "InventoryScreenMixin",
+    "InventoryScreenMixinCurio",
     "ScreenMixin"
   ],
   "mixins": [
