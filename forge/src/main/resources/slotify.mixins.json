@@ -4,7 +4,8 @@
   "package": "net.mehvahdjukaar.slotify.mixins.forge",
   "compatibilityLevel": "JAVA_17",
   "client": [
-    "AbstractContainerScreenMixin"
+    "AbstractContainerScreenMixin",
+    "InventoryScreenMixin"
   ],
   "mixins": [
   ],

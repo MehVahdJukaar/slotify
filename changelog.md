@@ -1,1 +1,2 @@
-big fixes. fabric can now also uses mapped class names (offical ones)
+fixed forge mixins being stupid and not supporting ModifyArgs for 2 years
+using another one instead...

@@ -1,9 +1,8 @@
-package net.mehvahdjukaar.slotify.mixins;
+package net.mehvahdjukaar.slotify.mixins.fabric;
 
 import net.mehvahdjukaar.slotify.SlotifyScreen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Pseudo;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyArgs;
 import org.spongepowered.asm.mixin.injection.invoke.arg.Args;

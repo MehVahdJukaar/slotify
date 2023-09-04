@@ -6,11 +6,14 @@ import net.mehvahdjukaar.slotify.GuiModifierManager;
 import net.mehvahdjukaar.slotify.Slotify;
 import net.mehvahdjukaar.slotify.SlotifyScreen;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
 import net.minecraftforge.client.event.ScreenEvent;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.fml.loading.FMLEnvironment;
 
 /**
  * Author: MehVahdJukaar
@@ -20,8 +23,12 @@ public class SlotifyForge {
 
 
     public SlotifyForge() {
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(SlotifyForge::registerReload);
-        MinecraftForge.EVENT_BUS.addListener(SlotifyForge::renderScreen);
+        if(FMLEnvironment.dist == Dist.CLIENT) {
+            FMLJavaModLoadingContext.get().getModEventBus().addListener(SlotifyForge::registerReload);
+            MinecraftForge.EVENT_BUS.addListener(SlotifyForge::renderScreen);
+        }else{
+            Slotify.LOGGER.warn("Slotify has been installed on a server. This wont cause issues but mod wont do anything here as its a client mod");
+        }
     }
 
 

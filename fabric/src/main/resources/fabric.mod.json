@@ -13,7 +13,7 @@
   },
   "license": "${mod_license}",
   "icon": "icon.png",
-  "environment": "*",
+  "environment": "client",
   "entrypoints": {
     "client": [
       "net.mehvahdjukaar.slotify.fabric.SlotifyFabric"
@@ -26,8 +26,5 @@
   "depends": {
     "fabric": "*",
     "minecraft": ">=${minecraft_min_version} <${minecraft_max_version}"
-  },
-  "suggests": {
-    "sleep_tight": "*"
   }
 }
