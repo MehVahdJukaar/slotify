@@ -1,2 +1,1 @@
-fixed forge mixins being stupid and not supporting ModifyArgs for 2 years
-using another one instead...
+sprites now accept floats
