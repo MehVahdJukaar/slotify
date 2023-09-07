@@ -1,1 +1,1 @@
-added curios compat
+sprite supports floats
