@@ -11,7 +11,7 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
-public record SlotModifier(TargetSlots targets, int color, int color2, int xOffset, int yOffset,
+public record SlotModifier(TargetSlots targets, int color, int color2, int xOffset, int yOffset, int zOffset,
                            Optional<Integer> targetX, Optional<Integer> targetY, Optional<String> targetClass) {
 
     public static final Codec<SlotModifier> CODEC = RecordCodecBuilder.create(i -> i.group(
@@ -20,6 +20,7 @@ public record SlotModifier(TargetSlots targets, int color, int color2, int xOffs
             ColorUtils.CODEC.optionalFieldOf("color_2", -1).forGetter(SlotModifier::color2),
             Codec.INT.optionalFieldOf("x_offset", 0).forGetter(SlotModifier::xOffset),
             Codec.INT.optionalFieldOf("y_offset", 0).forGetter(SlotModifier::yOffset),
+            Codec.INT.optionalFieldOf("z_offset", 0).forGetter(SlotModifier::zOffset),
             Codec.INT.optionalFieldOf("target_x").forGetter(SlotModifier::targetX),
             Codec.INT.optionalFieldOf("target_y").forGetter(SlotModifier::targetY),
             Codec.STRING.xmap(PlatStuff::maybeRemapName, PlatStuff::maybeRemapName).optionalFieldOf("target_class_name").forGetter(SlotModifier::targetClass)
@@ -38,13 +39,13 @@ public record SlotModifier(TargetSlots targets, int color, int color2, int xOffs
     }
 
     public boolean hasCustomColor() {
-        return color != -1 || color2 != -1;
+        return color != -1 || color2 != -1 || zOffset != -1;
     }
 
     public void renderCustomHighlight(GuiGraphics graphics, int x, int y, int offset) {
         int c1 = color;
         int c2 = color2 == -1 ? color : color2;
-        renderSlotHighlight(graphics, x, y, c1, c2, offset);
+        renderSlotHighlight(graphics, x, y, c1, c2, offset + zOffset);
     }
 
     public static void renderSlotHighlight(GuiGraphics graphics, int x, int y,
@@ -71,6 +72,7 @@ public record SlotModifier(TargetSlots targets, int color, int color2, int xOffs
                 other.hasCustomColor() ? other.color2 : this.color,
                 other.hasOffset() ? other.xOffset : this.xOffset,
                 other.hasOffset() ? other.yOffset : this.yOffset,
+                other.zOffset,
                 other.targetX,
                 other.targetY,
                 other.targetClass

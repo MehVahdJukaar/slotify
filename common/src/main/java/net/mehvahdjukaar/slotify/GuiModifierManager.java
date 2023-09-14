@@ -2,15 +2,12 @@ package net.mehvahdjukaar.slotify;
 
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.serialization.JsonOps;
 import it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
-import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
@@ -46,7 +43,7 @@ public class GuiModifierManager extends SimpleJsonResourceReloadListener {
         BY_CLASS.clear();
 
         List<GuiModifier> allModifiers = new ArrayList<>();
-         for (var o : object.values()) {
+        for (var o : object.values()) {
             var result = GuiModifier.CODEC.parse(JsonOps.INSTANCE, o);
             GuiModifier modifier = result.getOrThrow(false, e -> Slotify.LOGGER.error("Failed to parse menu modifier: {}", e));
             allModifiers.add(modifier);
@@ -87,8 +84,8 @@ public class GuiModifierManager extends SimpleJsonResourceReloadListener {
             }
 
         }
-        Slotify.LOGGER.info("Loaded modifiers for: "+ SLOTS_BY_MENU_ID.keySet() + " "+
-                SLOTS_BY_CLASS.keySet() + " " + BY_MENU_ID.keySet() + " "+ BY_CLASS.keySet());
+        Slotify.LOGGER.info("Loaded modifiers for: " + SLOTS_BY_MENU_ID.keySet() + " " +
+                SLOTS_BY_CLASS.keySet() + " " + BY_MENU_ID.keySet() + " " + BY_CLASS.keySet());
     }
 
     private static void unwrapSlots(GuiModifier mod, Int2ObjectArrayMap<SlotModifier> map) {
@@ -111,7 +108,7 @@ public class GuiModifierManager extends SimpleJsonResourceReloadListener {
     private static ScreenModifier getScreenModifier(AbstractContainerScreen<?> screen) {
         ScreenModifier m = null;
         AbstractContainerMenu menu = screen.getMenu();
-        if(menu != null) {
+        if (menu != null) {
             m = BY_CLASS.get(menu.getClass());
         }
         if (m == null) {

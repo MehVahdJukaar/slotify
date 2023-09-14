@@ -1,1 +1,1 @@
-fixed sprites rendering on fabric part 2
+fixed sprites rendering on fabric part 3 (fixed depth test)

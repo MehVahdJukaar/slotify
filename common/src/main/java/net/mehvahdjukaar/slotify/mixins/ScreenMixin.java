@@ -1,5 +1,6 @@
 package net.mehvahdjukaar.slotify.mixins;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.mehvahdjukaar.slotify.GuiModifierManager;
 import net.mehvahdjukaar.slotify.ScreenModifier;
@@ -29,7 +30,10 @@ public abstract class ScreenMixin implements SlotifyScreen {
 
     @Override
     public void slotify$renderExtraSprites(PoseStack poseStack) {
-        if (slotify$modifier != null) slotify$modifier.sprites().forEach(r -> r.render(poseStack));
+        if (slotify$modifier != null) {
+            RenderSystem.enableDepthTest();
+            slotify$modifier.sprites().forEach(r -> r.render(poseStack));
+        }
     }
 
     @Override
