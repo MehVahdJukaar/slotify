@@ -1,1 +1,1 @@
-sprites now accept floats
+fixed sprites rendering
