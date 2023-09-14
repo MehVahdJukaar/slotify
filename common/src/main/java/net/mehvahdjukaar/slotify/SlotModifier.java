@@ -9,7 +9,8 @@ import net.minecraft.world.inventory.Slot;
 
 import java.util.*;
 
-public final class SlotModifier extends GuiComponent {
+public record SlotModifier(TargetSlots targets, int color, int color2, int xOffset, int yOffset, int zOffset,
+                           Optional<Integer> targetX, Optional<Integer> targetY, Optional<String> targetClass) {
 
     public static final Codec<SlotModifier> CODEC = RecordCodecBuilder.create(i -> i.group(
             TargetSlots.CODEC.fieldOf("slots").forGetter(SlotModifier::targets),
@@ -17,6 +18,7 @@ public final class SlotModifier extends GuiComponent {
             ColorUtils.CODEC.optionalFieldOf("color_2", -1).forGetter(SlotModifier::color2),
             Codec.INT.optionalFieldOf("x_offset", 0).forGetter(SlotModifier::xOffset),
             Codec.INT.optionalFieldOf("y_offset", 0).forGetter(SlotModifier::yOffset),
+            Codec.INT.optionalFieldOf("z_offset", 0).forGetter(SlotModifier::zOffset),
             Codec.INT.optionalFieldOf("target_x").forGetter(SlotModifier::targetX),
             Codec.INT.optionalFieldOf("target_y").forGetter(SlotModifier::targetY),
             Codec.STRING.xmap(PlatStuff::remapName, PlatStuff::remapName).optionalFieldOf("target_class_name").forGetter(SlotModifier::targetClass)
@@ -55,13 +57,13 @@ public final class SlotModifier extends GuiComponent {
     }
 
     public boolean hasCustomColor() {
-        return color != -1 || color2 != -1;
+        return color != -1 || color2 != -1 || zOffset != -1;
     }
 
     public void renderCustomHighlight(PoseStack graphics, int x, int y, int offset) {
         int c1 = color;
         int c2 = color2 == -1 ? color : color2;
-        renderSlotHighlight2(graphics, x, y, c1, c2, offset);
+        renderSlotHighlight2(graphics, x, y, c1, c2, offset + zOffset);
     }
 
     public static void renderSlotHighlight2(PoseStack graphics, int x, int y,
@@ -110,6 +112,7 @@ public final class SlotModifier extends GuiComponent {
                 other.hasCustomColor() ? other.color2 : this.color,
                 other.hasOffset() ? other.xOffset : this.xOffset,
                 other.hasOffset() ? other.yOffset : this.yOffset,
+                other.zOffset,
                 other.targetX,
                 other.targetY,
                 other.targetClass

@@ -2,7 +2,6 @@ package net.mehvahdjukaar.slotify;
 
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.serialization.JsonOps;
 import it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap;
 import net.minecraft.client.gui.screens.Screen;
@@ -84,8 +83,8 @@ public class GuiModifierManager extends SimpleJsonResourceReloadListener {
             }
 
         }
-        Slotify.LOGGER.info("Loaded modifiers for: "+ SLOTS_BY_MENU_ID.keySet() + " "+
-                SLOTS_BY_CLASS.keySet() + " " + BY_MENU_ID.keySet() + " "+ BY_CLASS.keySet());
+        Slotify.LOGGER.info("Loaded modifiers for: " + SLOTS_BY_MENU_ID.keySet() + " " +
+                SLOTS_BY_CLASS.keySet() + " " + BY_MENU_ID.keySet() + " " + BY_CLASS.keySet());
     }
 
     private static void unwrapSlots(GuiModifier mod, Int2ObjectArrayMap<SlotModifier> map) {

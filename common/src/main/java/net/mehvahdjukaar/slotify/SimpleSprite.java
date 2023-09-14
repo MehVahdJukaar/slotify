@@ -21,7 +21,7 @@ public record SimpleSprite(ResourceLocation texture, float x, float y, float wid
             Codec.FLOAT.fieldOf("y").forGetter(SimpleSprite::y),
             Codec.FLOAT.fieldOf("width").forGetter(SimpleSprite::width),
             Codec.FLOAT.fieldOf("height").forGetter(SimpleSprite::height),
-            Codec.FLOAT.optionalFieldOf("z_offset", 0.0f).forGetter(SimpleSprite::z)
+            Codec.FLOAT.optionalFieldOf("z", 0.0f).forGetter(SimpleSprite::z)
     ).apply(i, SimpleSprite::new));
 
     public void render(PoseStack poseStack) {
