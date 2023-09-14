@@ -1,1 +1,1 @@
-fixed sprites rendering
+fixed sprites rendering on fabric part 2

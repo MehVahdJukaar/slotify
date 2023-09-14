@@ -10,6 +10,7 @@ import net.minecraft.world.entity.EntityEvent;
 import net.minecraft.world.entity.player.Player;
 import org.joml.Matrix4f;
 
+import java.awt.*;
 import java.util.Optional;
 
 public record SimpleSprite(ResourceLocation texture, float x, float y, float width, float height, float z,

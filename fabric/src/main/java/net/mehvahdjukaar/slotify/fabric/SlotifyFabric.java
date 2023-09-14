@@ -7,6 +7,7 @@ import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.fabricmc.loader.api.FabricLoader;
 import net.mehvahdjukaar.slotify.GuiModifierManager;
+import net.mehvahdjukaar.slotify.ScreenModifier;
 import net.mehvahdjukaar.slotify.Slotify;
 import net.mehvahdjukaar.slotify.SlotifyScreen;
 import net.minecraft.resources.ResourceLocation;
@@ -26,11 +27,13 @@ public class SlotifyFabric implements ClientModInitializer {
         addClientReloadListener(GuiModifierManager::new, Slotify.res("gui_modifiers"));
         ScreenEvents.AFTER_INIT.register((client, screen, scaledWidth, scaledHeight) -> {
             if (screen instanceof SlotifyScreen ss) {
-                if (ss.slotify$hasSprites()) {
+                ScreenModifier guiModifier = GuiModifierManager.getGuiModifier(screen);
+                if (guiModifier != null && !guiModifier.sprites().isEmpty()) {
                     ScreenEvents.afterRender(screen).register((screen1, graphics, mouseX, mouseY, tickDelta) -> {
 
                         var matrices = graphics.pose();
                         matrices.pushPose();
+                        matrices.setIdentity();
                         matrices.translate(scaledWidth / 2F, scaledHeight / 2F, 500);
 
                         ss.slotify$renderExtraSprites(matrices);
