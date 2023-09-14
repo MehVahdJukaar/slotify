@@ -33,7 +33,6 @@ public class ColorUtils {
         if (st.length() > 8) {
             return DataResult.error( "Invalid color format. Hex value must have up to 8 characters.");
         }
-
         try {
             int parsedValue = Integer.parseUnsignedInt(st, 16);
             return DataResult.success(st);
