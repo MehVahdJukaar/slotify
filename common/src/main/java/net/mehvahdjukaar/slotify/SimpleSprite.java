@@ -9,7 +9,11 @@ import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.resources.ResourceLocation;
 
-public record SimpleSprite(ResourceLocation texture, float x, float y, float width, float height, float z) {
+import java.awt.*;
+import java.util.Optional;
+
+public record SimpleSprite(ResourceLocation texture, float x, float y, float width, float height, float z,
+                           Optional<String> tooltip){//, Optional<ScreenSupplier> screenSupp) {
 
     public static final Codec<SimpleSprite> CODEC = RecordCodecBuilder.create(i -> i.group(
             ResourceLocation.CODEC.fieldOf("texture").forGetter(SimpleSprite::texture),

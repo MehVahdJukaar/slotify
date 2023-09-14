@@ -84,6 +84,8 @@ public class GuiModifierManager extends SimpleJsonResourceReloadListener {
             }
 
         }
+        Slotify.LOGGER.info("Loaded modifiers for: "+ SLOTS_BY_MENU_ID.keySet() + " "+
+                SLOTS_BY_CLASS.keySet() + " " + BY_MENU_ID.keySet() + " "+ BY_CLASS.keySet());
     }
 
     private static void unwrapSlots(GuiModifier mod, Int2ObjectArrayMap<SlotModifier> map) {
