@@ -8,6 +8,8 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
@@ -23,8 +25,10 @@ public class GuiModifierManager extends SimpleJsonResourceReloadListener {
 
     private static final Map<MenuType<?>, Int2ObjectArrayMap<SlotModifier>> SLOTS_BY_MENU_ID = new IdentityHashMap<>();
     private static final Map<Class<?>, Int2ObjectArrayMap<SlotModifier>> SLOTS_BY_CLASS = new IdentityHashMap<>();
+    private static final Map<String, Int2ObjectArrayMap<SlotModifier>> SLOTS_BY_TITLE = new HashMap<>();
     public static final Map<MenuType<?>, ScreenModifier> BY_MENU_ID = new IdentityHashMap<>();
     public static final Map<Class<?>, ScreenModifier> BY_CLASS = new IdentityHashMap<>();
+    public static final Map<String, ScreenModifier> BY_TITLE = new HashMap<>();
 
 
     private static final ResourceLocation INVENTORY = new ResourceLocation("inventory");
@@ -39,8 +43,10 @@ public class GuiModifierManager extends SimpleJsonResourceReloadListener {
     protected void apply(Map<ResourceLocation, JsonElement> object, ResourceManager resourceManager, ProfilerFiller profiler) {
         SLOTS_BY_MENU_ID.clear();
         SLOTS_BY_CLASS.clear();
+        SLOTS_BY_TITLE.clear();
         BY_MENU_ID.clear();
         BY_CLASS.clear();
+        BY_TITLE.clear();
 
         List<GuiModifier> allModifiers = new ArrayList<>();
         for (var o : object.values()) {
@@ -51,7 +57,6 @@ public class GuiModifierManager extends SimpleJsonResourceReloadListener {
 
         for (GuiModifier mod : allModifiers) {
             //inventory has a null menu type for some reason
-
             if (mod.targetsClass()) {
                 try {
                     var cl = Class.forName(mod.target());
@@ -67,7 +72,7 @@ public class GuiModifierManager extends SimpleJsonResourceReloadListener {
                 }
 
 
-            } else {
+            } else if (mod.targetsMenuId()) {
                 ResourceLocation menuId = new ResourceLocation(mod.target());
                 boolean isInventory = menuId.equals(INVENTORY);
                 Optional<MenuType<?>> menu = BuiltInRegistries.MENU.getOptional(menuId);
@@ -80,6 +85,16 @@ public class GuiModifierManager extends SimpleJsonResourceReloadListener {
                                 i -> new Int2ObjectArrayMap<>());
                         unwrapSlots(mod, map);
                     }
+                }
+            } else {
+                //title target
+                String title = mod.target();
+                BY_TITLE.merge(title, new ScreenModifier(mod), (a, b) -> b.merge(a));
+
+                if (!mod.slotModifiers().isEmpty()) {
+                    Int2ObjectArrayMap<SlotModifier> map = SLOTS_BY_TITLE.computeIfAbsent(title,
+                            i -> new Int2ObjectArrayMap<>());
+                    unwrapSlots(mod, map);
                 }
             }
 
@@ -97,14 +112,6 @@ public class GuiModifierManager extends SimpleJsonResourceReloadListener {
         }
     }
 
-
-    @Nullable
-    public static ScreenModifier getGuiModifier(AbstractContainerScreen<?> screen) {
-        var m = BY_CLASS.get(screen.getClass());
-        m = getScreenModifier(screen);
-        return m;
-    }
-
     private static ScreenModifier getScreenModifier(AbstractContainerScreen<?> screen) {
         ScreenModifier m = null;
         AbstractContainerMenu menu = screen.getMenu();
@@ -120,6 +127,13 @@ public class GuiModifierManager extends SimpleJsonResourceReloadListener {
             }
             m = BY_MENU_ID.get(type);
         }
+        if (m == null) {
+            var c = screen.getTitle();
+            m = BY_TITLE.get(c.getString());
+            if (m == null && c instanceof MutableComponent mc && mc.getContents() instanceof TranslatableContents tc) {
+                m = BY_TITLE.get(tc.getKey());
+            }
+        }
         return m;
     }
 
@@ -128,6 +142,13 @@ public class GuiModifierManager extends SimpleJsonResourceReloadListener {
         var m = BY_CLASS.get(screen.getClass());
         if (m == null && screen instanceof AbstractContainerScreen<?> as) {
             m = getScreenModifier(as);
+        }
+        if (m == null) {
+            var c = screen.getTitle();
+            m = BY_TITLE.get(c.getString());
+            if (m == null && c instanceof MutableComponent mc && mc.getContents() instanceof TranslatableContents tc) {
+                m = BY_TITLE.get(tc.getKey());
+            }
         }
         return m;
     }
@@ -144,6 +165,13 @@ public class GuiModifierManager extends SimpleJsonResourceReloadListener {
                 type = null;
             }
             m = SLOTS_BY_MENU_ID.get(type);
+        }
+        if (m == null) {
+            var c = screen.getTitle();
+            m = SLOTS_BY_TITLE.get(c.getString());
+            if (m == null && c instanceof MutableComponent mc && mc.getContents() instanceof TranslatableContents tc) {
+                m = SLOTS_BY_TITLE.get(tc.getKey());
+            }
         }
         if (m != null) {
             return m.get(slot.index);
