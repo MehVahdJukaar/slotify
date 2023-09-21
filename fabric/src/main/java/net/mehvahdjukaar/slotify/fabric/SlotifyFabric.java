@@ -1,6 +1,7 @@
 package net.mehvahdjukaar.slotify.fabric;
 
 import com.google.common.base.Suppliers;
+import com.llamalad7.mixinextras.MixinExtrasAP;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
 import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
@@ -14,6 +15,7 @@ import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.resources.PreparableReloadListener;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.profiling.ProfilerFiller;
+import org.spongepowered.tools.obfuscation.MixinObfuscationProcessorInjection;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;

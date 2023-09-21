@@ -6,6 +6,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.level.block.EnderChestBlock;
 
 import java.util.*;
 
@@ -57,7 +58,7 @@ public record SlotModifier(TargetSlots targets, int color, int color2, int xOffs
     }
 
     public boolean hasCustomColor() {
-        return color != -1 || color2 != -1 || zOffset != -1;
+        return color != -1 || color2 != -1 || zOffset != 0;
     }
 
     public void renderCustomHighlight(PoseStack graphics, int x, int y, int offset) {
