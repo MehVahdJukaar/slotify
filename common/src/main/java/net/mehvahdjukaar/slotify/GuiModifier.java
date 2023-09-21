@@ -37,9 +37,9 @@ public record GuiModifier(Type type, String target,
                     var error = ResourceLocation.read(instance.target).error();
                     if (error.isPresent()) return DataResult.error(() -> error.get().message());
                 }
-                if (instance.type == Type.SCREEN_CLASS &&
+                if ((instance.type == Type.SCREEN_CLASS || instance.type == Type.SCREEN_TITLE) &&
                         instance.slotModifiers.stream().anyMatch(SlotModifier::hasOffset)) {
-                    return DataResult.error(() -> "Slot modifiers cannot alter position when using a screen_class target_type. Use menu_id or menu_class instead");
+                    return DataResult.error(() -> "Slot modifiers cannot alter position when using a screen_class or screen_title target_type. Use menu_id or menu_class instead");
                 }
                 return DataResult.success(instance);
             }, Function.identity());
@@ -50,7 +50,7 @@ public record GuiModifier(Type type, String target,
         MENU_ID,
         MENU_CLASS,
         SCREEN_CLASS,
-        MENU_TITLE;
+        SCREEN_TITLE;
 
         @Override
         public String getSerializedName() {
@@ -59,7 +59,7 @@ public record GuiModifier(Type type, String target,
     }
 
     public boolean targetsClass() {
-        return type != Type.MENU_ID && type != Type.MENU_TITLE;
+        return type != Type.MENU_ID && type != Type.SCREEN_TITLE;
     }
 
     public boolean targetsMenuId() {

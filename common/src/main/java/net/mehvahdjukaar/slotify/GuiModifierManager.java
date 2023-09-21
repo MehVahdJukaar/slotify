@@ -127,35 +127,38 @@ public class GuiModifierManager extends SimpleJsonResourceReloadListener {
             }
             m = BY_MENU_ID.get(type);
         }
-        if (m == null) {
-            var c = screen.getTitle();
-            m = BY_TITLE.get(c.getString());
-            if (m == null && c instanceof MutableComponent mc && mc.getContents() instanceof TranslatableContents tc) {
-                m = BY_TITLE.get(tc.getKey());
-            }
-        }
         return m;
     }
 
     @Nullable
     public static ScreenModifier getGuiModifier(Screen screen) {
-        var m = BY_CLASS.get(screen.getClass());
+        ScreenModifier m = null;
+        var c = screen.getTitle();
+        m = BY_TITLE.get(c.getString());
+        if (m == null && c instanceof MutableComponent mc && mc.getContents() instanceof TranslatableContents tc) {
+            m = BY_TITLE.get(tc.getKey());
+        }
+        if (m == null) {
+            m = BY_CLASS.get(screen.getClass());
+        }
         if (m == null && screen instanceof AbstractContainerScreen<?> as) {
             m = getScreenModifier(as);
         }
-        if (m == null) {
-            var c = screen.getTitle();
-            m = BY_TITLE.get(c.getString());
-            if (m == null && c instanceof MutableComponent mc && mc.getContents() instanceof TranslatableContents tc) {
-                m = BY_TITLE.get(tc.getKey());
-            }
-        }
+
         return m;
     }
 
     @Nullable
     public static SlotModifier getSlotModifier(AbstractContainerScreen<?> screen, Slot slot) {
-        var m = SLOTS_BY_CLASS.get(screen.getClass());
+        Int2ObjectArrayMap<SlotModifier> m = null;
+        var c = screen.getTitle();
+        m = SLOTS_BY_TITLE.get(c.getString());
+        if (m == null && c instanceof MutableComponent mc && mc.getContents() instanceof TranslatableContents tc) {
+            m = SLOTS_BY_TITLE.get(tc.getKey());
+        }
+        if (m == null) {
+            m = SLOTS_BY_CLASS.get(screen.getClass());
+        }
         if (m == null) SLOTS_BY_CLASS.get(screen.getMenu().getClass());
         if (m == null) {
             MenuType<?> type;
@@ -165,13 +168,6 @@ public class GuiModifierManager extends SimpleJsonResourceReloadListener {
                 type = null;
             }
             m = SLOTS_BY_MENU_ID.get(type);
-        }
-        if (m == null) {
-            var c = screen.getTitle();
-            m = SLOTS_BY_TITLE.get(c.getString());
-            if (m == null && c instanceof MutableComponent mc && mc.getContents() instanceof TranslatableContents tc) {
-                m = SLOTS_BY_TITLE.get(tc.getKey());
-            }
         }
         if (m != null) {
             return m.get(slot.index);

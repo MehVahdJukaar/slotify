@@ -1,1 +1,1 @@
-addeda new menu_title target type that can target any menu with a particualr translated or untranslated name
+switched priority of screen target. also called now screen_target instead
