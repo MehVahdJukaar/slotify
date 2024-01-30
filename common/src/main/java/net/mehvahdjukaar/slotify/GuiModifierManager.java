@@ -8,6 +8,7 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
+import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.core.Registry;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.contents.TranslatableContents;
@@ -122,12 +123,21 @@ public class GuiModifierManager extends SimpleJsonResourceReloadListener {
     }
 
     private static ScreenModifier getScreenModifier(AbstractContainerScreen<?> screen) {
-        ScreenModifier m;
-        m = BY_CLASS.get(screen.getMenu().getClass());
+        ScreenModifier m = null;
+        AbstractContainerMenu menu = screen.getMenu();
+        if(screen.getClass() == InventoryScreen.class){
+            m = BY_CLASS.get(InventoryMenu.class);
+        }
+        else if(screen.getClass() == CreativeModeInventoryScreen.class){
+            m = BY_CLASS.get(CreativeModeInventoryScreen.ItemPickerMenu.class);
+        }
+        if (menu != null) {
+            m = BY_CLASS.get(menu.getClass());
+        }
         if (m == null) {
             MenuType<?> type;
             try {
-                type = screen.getMenu().getType();
+                type = menu.getType();
             } catch (Exception e) {
                 type = null;
             }

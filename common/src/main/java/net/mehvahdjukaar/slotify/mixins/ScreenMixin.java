@@ -25,7 +25,7 @@ public abstract class ScreenMixin implements SlotifyScreen {
     @Unique
     private ScreenModifier slotify$modifier = null;
 
-    @Inject(method = "init()V", at = @At("TAIL"))
+    @Inject(method = "<init>", at = @At("TAIL"))
     private void onInit(CallbackInfo ci) {
         slotify$modifier = GuiModifierManager.getGuiModifier((Screen) (Object) this);
     }
