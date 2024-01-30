@@ -6,12 +6,10 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.world.inventory.Slot;
-import net.minecraft.world.level.block.EnderChestBlock;
 
 import java.util.*;
 
-public record SlotModifier(TargetSlots targets, int color, int color2, int xOffset, int yOffset, int zOffset,
-                           Optional<Integer> targetX, Optional<Integer> targetY, Optional<String> targetClass) {
+public final class SlotModifier extends GuiComponent {
 
     public static final Codec<SlotModifier> CODEC = RecordCodecBuilder.create(i -> i.group(
             TargetSlots.CODEC.fieldOf("slots").forGetter(SlotModifier::targets),
@@ -29,17 +27,19 @@ public record SlotModifier(TargetSlots targets, int color, int color2, int xOffs
     private final int color2;
     private final int xOffset;
     private final int yOffset;
+    private final int zOffset;
     private final Optional<Integer> targetX;
     private final Optional<Integer> targetY;
     private final Optional<String> targetClass;
 
-    public SlotModifier(TargetSlots targets, int color, int color2, int xOffset, int yOffset,
+    public SlotModifier(TargetSlots targets, int color, int color2, int xOffset, int yOffset, int zOffset,
                         Optional<Integer> targetX, Optional<Integer> targetY, Optional<String> targetClass) {
         this.targets = targets;
         this.color = color;
         this.color2 = color2;
         this.xOffset = xOffset;
         this.yOffset = yOffset;
+        this.zOffset = zOffset;
         this.targetX = targetX;
         this.targetY = targetY;
         this.targetClass = targetClass;
@@ -138,6 +138,10 @@ public record SlotModifier(TargetSlots targets, int color, int color2, int xOffs
 
     public int yOffset() {
         return yOffset;
+    }
+
+    public int zOffset() {
+        return zOffset;
     }
 
     public Optional<Integer> targetX() {

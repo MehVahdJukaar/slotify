@@ -12,8 +12,7 @@ import net.minecraft.resources.ResourceLocation;
 import java.awt.*;
 import java.util.Optional;
 
-public record SimpleSprite(ResourceLocation texture, float x, float y, float width, float height, float z,
-                           Optional<String> tooltip){//, Optional<ScreenSupplier> screenSupp) {
+public record SimpleSprite(ResourceLocation texture, float x, float y, float width, float height, float z){//, Optional<ScreenSupplier> screenSupp) {
 
     public static final Codec<SimpleSprite> CODEC = RecordCodecBuilder.create(i -> i.group(
             ResourceLocation.CODEC.fieldOf("texture").forGetter(SimpleSprite::texture),

@@ -13,8 +13,8 @@ import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
 public abstract class InventoryScreenMixin {
 
     @ModifyArg(method = "renderBg", at = @At(value = "INVOKE",
-            target = "Lnet/minecraft/client/gui/screens/inventory/InventoryScreen;renderEntityInInventoryFollowsMouse(Lnet/minecraft/client/gui/GuiGraphics;IIIFFLnet/minecraft/world/entity/LivingEntity;)V")
-            , index = 1
+            target = "Lnet/minecraft/client/gui/screens/inventory/InventoryScreen;renderEntityInInventory(IIIFFLnet/minecraft/world/entity/LivingEntity;)V")
+            , index = 0
     )
     public int modifyRenderEntityX(int x) {
         var m = ((SlotifyScreen) this).slotify$getModifier();
@@ -29,7 +29,7 @@ public abstract class InventoryScreenMixin {
 
     @ModifyArg(method = "renderBg", at = @At(value = "INVOKE",
             target = "Lnet/minecraft/client/gui/screens/inventory/InventoryScreen;renderEntityInInventory(IIIFFLnet/minecraft/world/entity/LivingEntity;)V")
-            , index = 2
+            , index = 1
     )
     public int modifyRenderEntityY(int y) {
         var m = ((SlotifyScreen) this).slotify$getModifier();

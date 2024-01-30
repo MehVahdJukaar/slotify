@@ -1,1 +1,1 @@
-sprite supports floats
+backported recent changes

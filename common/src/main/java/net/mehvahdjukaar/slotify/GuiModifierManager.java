@@ -2,10 +2,12 @@ package net.mehvahdjukaar.slotify;
 
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.serialization.JsonOps;
 import it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
 import net.minecraft.core.Registry;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.contents.TranslatableContents;
@@ -14,6 +16,7 @@ import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.Slot;
 import org.jetbrains.annotations.Nullable;
@@ -58,7 +61,14 @@ public class GuiModifierManager extends SimpleJsonResourceReloadListener {
             //inventory has a null menu type for some reason
             if (mod.targetsClass()) {
                 try {
-                    var cl = Class.forName(mod.target());
+                    String target = mod.target();
+                    Class cl;
+                    if (target.equals("InventoryMenu")) {
+                        cl = InventoryMenu.class;
+                    }
+                    else if(target.equals("ItemPickerMenu")){
+                        cl = CreativeModeInventoryScreen.ItemPickerMenu.class;
+                    } else cl = Class.forName(target);
                     BY_CLASS.merge(cl, new ScreenModifier(mod), (a, b) -> b.merge(a));
 
                     if (!mod.slotModifiers().isEmpty()) {

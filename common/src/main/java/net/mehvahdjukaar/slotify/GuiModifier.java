@@ -22,7 +22,7 @@ public record GuiModifier(Type type, String target,
     public static final Codec<GuiModifier> CODEC =
             RecordCodecBuilder.<GuiModifier>create(i -> i.group(
                     StringRepresentable.fromEnum(Type::values).fieldOf("target_type").forGetter(GuiModifier::type),
-                    Codec.STRING.fieldOf("target").forGetter(GuiModifier::target),
+                    Codec.STRING.xmap(PlatStuff::remapName, PlatStuff::remapName).fieldOf("target").forGetter(GuiModifier::target),
                     SlotModifier.CODEC.listOf().optionalFieldOf("slot_modifiers", List.of()).forGetter(GuiModifier::slotModifiers),
                     Codec.INT.optionalFieldOf("title_x_offset", 0).forGetter(GuiModifier::titleX),
                     Codec.INT.optionalFieldOf("title_y_offset", 0).forGetter(GuiModifier::titleY),
